@@ -1,4 +1,4 @@
-package org.collage.creator;
+package searchSystem;
 
 import searchSystem.Application;
 import searchSystem.controller.InformationFactory;

@@ -1,7 +1,5 @@
-package org.collage.creator;
+package searchSystem;
 
-import searchSystem.Application;
-import searchSystem.CheckSiteStatusController;
 import searchSystem.controller.InformationFactory;
 import org.junit.Assert;
 import org.junit.Test;
