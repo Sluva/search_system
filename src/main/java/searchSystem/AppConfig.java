@@ -5,7 +5,6 @@ import searchSystem.controller.impl.Twitter4jParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
 @Configuration
 public class AppConfig {
 
@@ -16,6 +15,6 @@ public class AppConfig {
 
     @Bean
     public Twitter4jParser parser(){
-        return new Twitter4jParser(ConfigProperty.POOL_SIZE);
+        return new Twitter4jParser(5);
     }
 }

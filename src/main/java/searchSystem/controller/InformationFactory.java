@@ -10,11 +10,9 @@ import java.util.*;
 
 public class InformationFactory {
 
-    static final double MAX_PERCENT = 0.3;
     @Autowired
     private Twitter4jParser parser;
     private final static Logger logger = Logger.getLogger(InformationFactory.class);
-
 
     public String getUserImages(String login) throws TwitterException {
 

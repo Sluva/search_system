@@ -7,10 +7,6 @@ import org.springframework.stereotype.Controller;
 
 import java.util.logging.Logger;
 
-/**
- * Created by Ruslan on 21.12.2015.
- */
-
 @Controller
 public class CheckSiteStatusController {
 
