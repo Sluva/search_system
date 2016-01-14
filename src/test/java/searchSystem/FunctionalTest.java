@@ -17,8 +17,8 @@ import twitter4j.TwitterException;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FunctionalTest {
-    @Autowired
-    private InformationFactory informationFactory;
+
+    private InformationFactory informationFactory = new InformationFactory();
 
     @Autowired
     private ApplicationContext applicationContext;

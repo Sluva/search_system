@@ -32,8 +32,7 @@ public class MainController {
     @Value("${git.commit.time}")
     private String gitCommitTime;
 
-    @Autowired
-    private InformationFactory informationFactory;
+    private InformationFactory informationFactory = new InformationFactory();
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -47,43 +46,55 @@ public class MainController {
     @RequestMapping(value = "/resultWindow", method = RequestMethod.GET)
     public String showImages(
             @RequestParam(value = "login", required = false, defaultValue = "") String login,
-            @RequestParam(value = "input-min-followers", required = false, defaultValue = "") String minFollowers,
-            @RequestParam(value = "input-max-followers", required = false, defaultValue = "") String maxFollowers,
-            @RequestParam(value = "input-min-favourites", required = false, defaultValue = "") String minFavourites,
-            @RequestParam(value = "input-max-favourites", required = false, defaultValue = "") String maxFavourites,
-            @RequestParam(value = "input-min-friends", required = false, defaultValue = "") String minFriends,
-            @RequestParam(value = "input-max-friends", required = false, defaultValue = "") String maxFriends,
-            @RequestParam(value = "user-id", required = false, defaultValue = "") String userId,
+            @RequestParam(value = "input-min-followers", required = false, defaultValue = "") int minFollowers,
+            @RequestParam(value = "input-max-followers", required = false, defaultValue = "") int maxFollowers,
+            @RequestParam(value = "input-min-favourites", required = false, defaultValue = "") int minFavourites,
+            @RequestParam(value = "input-max-favourites", required = false, defaultValue = "") int maxFavourites,
+            @RequestParam(value = "input-min-friends", required = false, defaultValue = "") int minFriends,
+            @RequestParam(value = "input-max-friends", required = false, defaultValue = "") int maxFriends,
             @RequestParam(value = "user-name", required = false, defaultValue = "") String userName,
-            @RequestParam(value = "user-status", required = false, defaultValue = "") String userStatus,
+            @RequestParam(value = "user-screen-name", required = false, defaultValue = "") String userScreenName,
             Map<String, Object> map) {
         if (!checkSiteStatusController.checkSiteStatus("https://twitter.com")) {
             map.put("errorMessage", "https://twitter.com does not respond, please try later");
             return "errorWindow";
         }
+
         User user;
+        User[] users;
+
         try {
-//            user.getFollowersCount();
-//            user.getFavouritesCount();
-//            user.getFriendsCount();
-//            user.getId();
-//            user.getName();
-//            user.getStatus();
             user = informationFactory.check(login);
-            map.put("infos", informationFactory.getUserImages(login));
+            users = informationFactory.getFollowers(login);
+
+            if (minFollowers <= maxFollowers && minFollowers >= 0)
+                users = informationFactory.filterByNumberFollowers(users, minFollowers, maxFollowers);
+
+            if (minFavourites <= maxFavourites && minFavourites >= 0)
+                users = informationFactory.filterByNumberFavourites(users, minFavourites, maxFavourites);
+
+            if (minFriends <= maxFriends && minFriends >= 0)
+                users = informationFactory.filterByNumberFriends(users, minFriends, maxFriends);
+
+            if (!userName.trim().isEmpty())
+                users = informationFactory.filterByUserName(users, userName);
+
+            if (!userScreenName.trim().isEmpty())
+                users = informationFactory.filterByUserScreenName(users, userScreenName);
+
         } catch (TwitterException /*| IOException*/ e) {
             logger.error(e);
-            if (e instanceof TwitterException) {
-                if (((TwitterException) e).getErrorMessage().equals("Rate limit exceeded"))
-                    map.put("errorMessage", "Rate limit, please wait " + ((TwitterException) e).getRateLimitStatus().getSecondsUntilReset() / 60 + ":" + ((TwitterException) e).getRateLimitStatus().getSecondsUntilReset() % 60);
-                else if (((TwitterException) e).getErrorMessage().equals("Sorry, that page does not exist."))
-                    map.put("errorMessage", "login:\"" + login + "\" not found");
-                else {
-                    map.put("errorMessage", "Sorry, error");
-                }
+            if (e.getErrorMessage().equals("Rate limit exceeded"))
+                map.put("errorMessage", "Rate limit, please wait " + e.getRateLimitStatus().getSecondsUntilReset() / 60 + ":" + e.getRateLimitStatus().getSecondsUntilReset() % 60);
+            else if (e.getErrorMessage().equals("Sorry, that page does not exist."))
+                map.put("errorMessage", "login:\"" + login + "\" not found");
+            else {
+                map.put("errorMessage", "Sorry, error");
             }
             return "errorWindow";
         }
+
+        map.put("followers", users);
         map.put("user", user);
         return "resultWindow";
     }
@@ -111,7 +122,7 @@ public class MainController {
     @RequestMapping(value = "/status503")
     @ResponseBody
     public ResponseEntity<String> testBackOf(){
-        return new ResponseEntity<String>(HttpStatus.SERVICE_UNAVAILABLE);
+        return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @RequestMapping(value = "/gitproperties")
