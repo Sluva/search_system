@@ -44,21 +44,33 @@ public class MainController {
     private final static Logger logger = Logger.getLogger(MainController.class);
 
 
-    @RequestMapping(value = "/followers", method = RequestMethod.GET)
+    @RequestMapping(value = "/resultWindow", method = RequestMethod.GET)
     public String showImages(
             @RequestParam(value = "login", required = false, defaultValue = "") String login,
+            @RequestParam(value = "input-min-followers", required = false, defaultValue = "") String minFollowers,
+            @RequestParam(value = "input-max-followers", required = false, defaultValue = "") String maxFollowers,
+            @RequestParam(value = "input-min-favourites", required = false, defaultValue = "") String minFavourites,
+            @RequestParam(value = "input-max-favourites", required = false, defaultValue = "") String maxFavourites,
+            @RequestParam(value = "input-min-friends", required = false, defaultValue = "") String minFriends,
+            @RequestParam(value = "input-max-friends", required = false, defaultValue = "") String maxFriends,
+            @RequestParam(value = "user-id", required = false, defaultValue = "") String userId,
+            @RequestParam(value = "user-name", required = false, defaultValue = "") String userName,
+            @RequestParam(value = "user-status", required = false, defaultValue = "") String userStatus,
             Map<String, Object> map) {
         if (!checkSiteStatusController.checkSiteStatus("https://twitter.com")) {
             map.put("errorMessage", "https://twitter.com does not respond, please try later");
-            return "error";
+            return "errorWindow";
         }
         User user;
         try {
+//            user.getFollowersCount();
+//            user.getFavouritesCount();
+//            user.getFriendsCount();
+//            user.getId();
+//            user.getName();
+//            user.getStatus();
             user = informationFactory.check(login);
             map.put("infos", informationFactory.getUserImages(login));
-//            String bufferedImage = imageCreator.getImgUrl(images, width, height);
-//            map.put("imgSrc", bufferedImage);
-
         } catch (TwitterException /*| IOException*/ e) {
             logger.error(e);
             if (e instanceof TwitterException) {
@@ -70,20 +82,20 @@ public class MainController {
                     map.put("errorMessage", "Sorry, error");
                 }
             }
-            return "error";
+            return "errorWindow";
         }
         map.put("user", user);
-        return "viewImage";
+        return "resultWindow";
     }
 
-    @RequestMapping(value = "/index")
+    @RequestMapping(value = "/mainWindow")
     public String redirect() {
-        return "index";
+        return "mainWindow";
     }
 
     @RequestMapping(value = "/")
     public String ef() {
-        return "index";
+        return "mainWindow";
     }
 
     @RequestMapping(value = "/testBackOff")
@@ -94,7 +106,7 @@ public class MainController {
         else
             map.put("errorMessage", "backOff don't work:(");
 
-        return "error";
+        return "errorWindow";
     }
     @RequestMapping(value = "/status503")
     @ResponseBody
@@ -105,7 +117,7 @@ public class MainController {
     @RequestMapping(value = "/gitproperties")
     public String gitProperties(Map<String, Object> map){
         map.put("errorMessage", "commit id describe short "  + idDescribeShort + " git commit time = " + gitCommitTime);
-        return "error";
+        return "errorWindow";
     }
 
 

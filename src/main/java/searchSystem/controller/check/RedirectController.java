@@ -14,7 +14,7 @@ public class RedirectController {
     public String getPage(String page) {
         String s;
         if ((s = map.get(page)) != null) return s;
-        return "error";
+        return "errorWindow";
     }
 
 }

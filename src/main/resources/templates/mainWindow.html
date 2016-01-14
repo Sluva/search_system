@@ -1,0 +1,76 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/cerulean/bootstrap.min.css"/>
+    <style type="text/css">
+        .form-control {
+            width : 120px;
+            margin-left : 50px;
+            display : inline-block;
+        }
+        .control-label {
+            margin-left : 40px;
+            width : 180px;
+        }
+        legend {
+            margin-left : 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" th:href="mainWindow">
+                    Search system
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div style="background-color: aquamarine"></div>
+    <h3 class="col-md-offset-2" th:text="${rateLimit}"></h3>
+    <form class="form-horizontal" id="myForm" th:action="resultWindow">
+        <div class="form-group">
+            <div class="form-group has-success">
+                <label class="control-label" for="ulogin">Input your login</label>
+                <input name="login" type="text" class="form-control" id="ulogin" placeholder="your login"/>
+            </div>
+            <legend>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Searching parameters</legend>
+            <div class="form-group has-success">
+                <label class="control-label" for="input-min-followers">Input followers count</label>
+                <input name="min-followers" type="number" class="form-control" id="input-min-followers" placeholder="min"/>
+                <input name="max-followers" type="number" class="form-control" id="input-max-followers" placeholder="max"/>
+            </div>
+            <div class="form-group has-success">
+                <label class="control-label" for="input-min-favourites">Input favourites count</label>
+                <input name="min-favourites" type="number" class="form-control" id="input-min-favourites" placeholder="min"/>
+                <input name="max-favourites" type="number" class="form-control" id="input-max-favourites" placeholder="max"/>
+            </div>
+            <div class="form-group has-success">
+                <label class="control-label" for="input-min-friends">Input friends count</label>
+                <input name="min-friends" type="number" class="form-control" id="input-min-friends" placeholder="min"/>
+                <input name="max-friends" type="number" class="form-control" id="input-max-friends" placeholder="max"/>
+            </div>
+            <div class="form-group has-success">
+                <label class="control-label" for="input-id">Input full or part of id</label>
+                <input name="user-id" type="text" class="form-control" id="input-id" placeholder="part of id"/>
+            </div>
+            <div class="form-group has-success">
+                <label class="control-label" for="input-name">Input full or part of name</label>
+                <input name="user-name" type="text" class="form-control" id="input-name" placeholder="part of name"/>
+            </div>
+            <div class="form-group has-success">
+                <label class="control-label" for="input-status">Input full or part of status</label>
+                <input name="user-status" type="text" class="form-control" id="input-status" placeholder="part of status"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Get information</button>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>
