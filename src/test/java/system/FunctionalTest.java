@@ -1,6 +1,6 @@
-package searchSystem;
+package system;
 
-import searchSystem.controller.InformationFactory;
+import system.controller.InformationFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

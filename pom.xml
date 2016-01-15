@@ -101,7 +101,6 @@
                 </executions>
             </plugin>
   <!--          plugin for generating information about git repo-->
-
             <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>

@@ -18,8 +18,17 @@
         <img id="userImg" src="" alt="image not found" height="100" class="img-circle"/>
     </a>
     <h3 id="userInfo"></h3>
-    <h4>Searching system:</h4>
-    <h5 th:text="${infos}"></h5>
+    <h4>Searching results:</h4>
+
+    <table>
+        <tbody>
+        <tr th:each="sb : ${followers}">
+            <td th:text="${sb.name}"></td>
+            <td th:text="${sb.screenName}"></td>
+            <td th:text="${sb.followersCount}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 </body>
@@ -29,32 +38,8 @@
 <script th:inline="javascript">
     userInfo(/*[[${user}]]*/);
     function userInfo(user) {
-        document.getElementById("userHref").href = "https://twitter.com/" + user.screenName;
         document.getElementById("userImg").src = user.originalProfileImageURLHttps;
-    }
-</script>
-
-<script th:inline="javascript">
-
-    checkImage(/*[[${images}]]*/);
-
-    function checkImage(images) {
-        var context = canvas.getContext("2d");
-        images.forEach(function (item) {
-            var img = new Image();
-            img.src = item.imgUrl;
-            img.setAttribute('crossOrigin', 'anonymous');
-            img.onload = function () {
-                context.drawImage(img, item.x, item.y, item.width + 1, item.height + 1);
-            };
-
-            img.onerror = function(){
-                img.src =  "default.png";
-                img.setAttribute('crossOrigin', 'anonymous');
-                context.drawImage(img, item.x, item.y, item.width + 1, item.height + 1);
-            }
-        });
-
+        document.getElementById("userHref").href = "https://twitter.com/" + user.screenName;
     }
 </script>
 
