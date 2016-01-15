@@ -104,7 +104,7 @@ public class MainController {
                     "https://twitter.com does not respond, please try later");
             return "errorWindow";
         }
-System.out.print(minFollowers);
+
         User user;
         User[] users;
 
@@ -137,19 +137,16 @@ System.out.print(minFollowers);
             }
 
         } catch (TwitterException /*| IOException*/ e) {
-            final int secondsInMinute = 60;
             logger.error(e);
             if (e.getErrorMessage().equals("Rate limit exceeded")) {
-                map.put("errorMessage", "Rate limit, please wait "
+                map.put("errorMessage", e.getErrorMessage()
                         + e.getRateLimitStatus().getSecondsUntilReset()
-                        / secondsInMinute + ":"
-                        + e.getRateLimitStatus().getSecondsUntilReset()
-                        % secondsInMinute);
+                        + " seconds");
             } else if (e.getErrorMessage()
                     .equals("Sorry, that page does not exist.")) {
-                map.put("errorMessage", "login:\"" + login + "\" not found");
+                map.put("errorMessage", e.getErrorMessage());
             } else {
-                map.put("errorMessage", "Sorry, error");
+                map.put("errorMessage", "It's bad");
             }
             return "errorWindow";
         }
@@ -182,14 +179,14 @@ System.out.print(minFollowers);
      * @param map errorMessage.
      * @return window type.
      */
-    @RequestMapping(value = "/testBackOff")
+    @RequestMapping(value = "/backoff")
     public final String checkBackOff(final Map<String, Object> map) {
-        String url = "http://localhost:8089/status503";
+        String url = "http://localhost:8089/norequest";
         if (!checkSiteStatusController.checkSiteStatus(url)) {
             map.put("errorMessage", url
                     + " does not respond, please try later");
         } else {
-            map.put("errorMessage", "backOff don't work:(");
+            map.put("errorMessage", "It don't should show");
         }
 
         return "errorWindow";
@@ -197,9 +194,9 @@ System.out.print(minFollowers);
 
     /**
      * error window.
-     * @return error 503.
+     * @return error.
      */
-    @RequestMapping(value = "/status503")
+    @RequestMapping(value = "/norequest")
     @ResponseBody
     public final ResponseEntity<String> testBackOf() {
         return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);

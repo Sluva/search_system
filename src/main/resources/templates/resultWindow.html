@@ -1,6 +1,11 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/cerulean/bootstrap.min.css"/>
+    <style type="text/css">
+        .mainColumn {
+            margin-left : 10px;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -20,12 +25,31 @@
     <h3 id="userInfo"></h3>
     <h4>Searching results:</h4>
 
-    <table>
+    <table class="table table-striped table-hover ">
+        <thead>
+        <tr>
+            <th>Fhoto</th>
+            <th>Name</th>
+            <th>Screen name</th>
+            <th>Followers count</th>
+            <th>Favourites count</th>
+            <th>Friends count</th>
+            <th>User id</th>
+            <th>Date of create profile</th>
+            <th>Location</th>
+        </tr>
+        </thead>
         <tbody>
-        <tr th:each="sb : ${followers}">
-            <td th:text="${sb.name}"></td>
-            <td th:text="${sb.screenName}"></td>
-            <td th:text="${sb.followersCount}"></td>
+        <tr class="info" th:each="sb : ${followers}">
+            <td class="mycolumn"><img th:src="${sb.originalProfileImageURLHttps}" alt="image not found" height="50px" class="img-rounded"/></td>
+            <td class="mycolumn" th:text="${sb.name}"></td>
+            <td class="mycolumn" th:text="${sb.screenName}"></td>
+            <td class="mycolumn" th:text="${sb.followersCount}"></td>
+            <td class="mycolumn" th:text="${sb.favouritesCount}"></td>
+            <td class="mycolumn" th:text="${sb.friendsCount}"></td>
+            <td class="mycolumn" th:text="${sb.id}"></td>
+            <td class="mycolumn" th:text="${sb.createdAt}"></td>
+            <td class="mycolumn" th:text="${sb.location}"></td>
         </tr>
         </tbody>
     </table>
